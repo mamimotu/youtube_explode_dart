@@ -58,7 +58,7 @@ class VideoClient {
       ThumbnailSet(videoId.value),
       playerResponse.videoKeywords,
       Engagement(
-        playerResponse.videoViewCount,
+        0,
         0,
         0,
       ),
