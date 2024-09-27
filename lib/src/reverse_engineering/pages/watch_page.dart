@@ -93,6 +93,7 @@ class WatchPage extends YoutubePage<WatchPageInitialData> {
   late final PlayerResponse? playerResponse = getPlayerResponse();
 
   ///
+  ///
   WatchPlayerConfig? getPlayerConfig() {
     final jsonMap = _playerConfigExp
         .firstMatch(root.getElementsByTagName('html').first.text)
@@ -108,12 +109,14 @@ class WatchPage extends YoutubePage<WatchPageInitialData> {
     final scriptText = root
         .querySelectorAll('script')
         .map((e) => e.text)
+        .where((x)=>x.contains("ytInitialPlayerResponse = {"))
         .toList(growable: false);
+
     //TODO: Implement player response extraction from PlayerConfig if extracting from the script fails.
     return scriptText.extractGenericData(
       ['var ytInitialPlayerResponse = '],
-      (root) => PlayerResponse(root),
-      () => TransientFailureException(
+          (root) => PlayerResponse(root),
+          () => TransientFailureException(
         'Failed to retrieve initial player response, please report this to the project GitHub page.',
       ),
     );
@@ -146,6 +149,34 @@ class WatchPage extends YoutubePage<WatchPageInitialData> {
       }
       return result;
     });
+  }
+
+  /// Function to create a WatchPage instance from the HTML body string.
+  static WatchPage fromBody(String htmlBody) {
+    // Parse the raw HTML body
+    final Document document = parser.parse(htmlBody);
+
+    // Extract cookies or other necessary data directly from the document
+    final String? visitorInfoLive = _visitorInfoLiveExp.firstMatch(htmlBody)?.group(1);
+    final String? ysc = _yscExp.firstMatch(htmlBody)?.group(1);
+
+    // if (visitorInfoLive == null || ysc == null) {
+    //   throw Exception('Required cookies are missing.');
+    // }
+
+    // Create and return a WatchPage instance using the parsed HTML
+    final WatchPage result = WatchPage.parse(htmlBody, "", "");
+
+    // Validate if the page is OK and the video is available
+    if (!result.isOk) {
+      throw TransientFailureException('Video watch page is broken.');
+    }
+
+    if (!result.isVideoAvailable) {
+      throw VideoUnavailableException.unavailable(VideoId(''));
+    }
+
+    return result;
   }
 }
 
