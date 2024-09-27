@@ -72,6 +72,15 @@ class VideoClient {
   Future<Video> get(dynamic videoId) async =>
       _getVideoFromWatchPage(VideoId.fromString(videoId));
 
+  /// Get a [Video] instance from a [videoId]
+  Future<Video> fromBody(String url, String body) async {
+    final videoId = VideoId2.parseVideoId(url);
+    final id = VideoId.fromString(videoId);
+
+    final watchPage = await WatchPage.fromBody(body);
+    return _getVideoFromWatchPage(id, watchPage);
+  }
+
   /// Returns a [RelatedVideosList] or null if no related videos were found.
   Future<RelatedVideosList?> getRelatedVideos(Video video) async {
     // Try 3 times before giving up
