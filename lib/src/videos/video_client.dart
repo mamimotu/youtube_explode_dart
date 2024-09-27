@@ -34,8 +34,7 @@ class VideoClient {
         commentsClient = CommentsClient(_httpClient);
 
   /// Gets the metadata associated with the specified video.
-  Future<Video> _getVideoFromWatchPage(VideoId videoId) async {
-    final watchPage = await WatchPage.get(_httpClient, videoId.value);
+  Future<Video> _getVideoFromWatchPage(VideoId videoId, WatchPage watchPage) async {
     final playerResponse = watchPage.playerResponse!;
 
     return Video(
@@ -60,8 +59,8 @@ class VideoClient {
       playerResponse.videoKeywords,
       Engagement(
         playerResponse.videoViewCount,
-        watchPage.videoLikeCount,
-        watchPage.videoDislikeCount,
+        0,
+        0,
       ),
       playerResponse.isLive,
       watchPage,
@@ -69,9 +68,12 @@ class VideoClient {
   }
 
   /// Get a [Video] instance from a [videoId]
-  Future<Video> get(dynamic videoId) async =>
-      _getVideoFromWatchPage(VideoId.fromString(videoId));
-
+  Future<Video> get(dynamic videoId) async {
+    final id = VideoId.fromString(videoId);
+    final watchPage = await WatchPage.get(_httpClient, id.value);
+    return _getVideoFromWatchPage(id, watchPage);
+  }
+  
   /// Get a [Video] instance from a [videoId]
   Future<Video> fromBody(String url, String body) async {
     final videoId = VideoId2.parseVideoId(url);
