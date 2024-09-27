@@ -75,8 +75,7 @@ class VideoClient {
   }
   
   /// Get a [Video] instance from a [videoId]
-  Future<Video> fromBody(String url, String body) async {
-    final videoId = VideoId2.parseVideoId(url);
+  Future<Video> fromBody(dynamic videoId, String body) async {
     final id = VideoId.fromString(videoId);
 
     final watchPage = await WatchPage.fromBody(body);
