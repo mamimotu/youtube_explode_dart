@@ -78,7 +78,7 @@ class VideoClient {
   Future<Video> fromBody(dynamic videoId, String body) async {
     final id = VideoId.fromString(videoId);
 
-    final watchPage = await WatchPage.fromBody(body);
+    final watchPage = await WatchPage.fromBody(id, body);
     return _getVideoFromWatchPage(id, watchPage);
   }
 
