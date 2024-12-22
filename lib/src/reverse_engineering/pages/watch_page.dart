@@ -176,7 +176,7 @@ class WatchPage extends YoutubePage<WatchPageInitialData> {
   }
 
   /// Function to create a WatchPage instance from the HTML body string.
-  static WatchPage fromBody(String htmlBody) {
+  static WatchPage fromBody(VideoId id, String htmlBody) {
     // Parse the raw HTML body
     final Document document = parser.parse(htmlBody);
 
@@ -189,7 +189,8 @@ class WatchPage extends YoutubePage<WatchPageInitialData> {
     // }
 
     // Create and return a WatchPage instance using the parsed HTML
-    final WatchPage result = WatchPage.parse(htmlBody, "", "");
+    Map<String, String> myMap = {};
+    final WatchPage result = WatchPage.parse(htmlBody, id, myMap);
 
     // Validate if the page is OK and the video is available
     if (!result.isOk) {
