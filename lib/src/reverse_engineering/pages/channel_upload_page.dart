@@ -72,7 +72,7 @@ class _InitialData extends InitialData {
     if (content.isEmpty) {
       return const <ChannelVideo>[];
     }
-    return content.map(_parseContent).whereNotNull().toList();
+    return content.map(_parseContent).nonNulls.toList();
   }
 
   List<JsonMap> getContentContext() {
@@ -185,6 +185,12 @@ class _InitialData extends InitialData {
           .get('richItemRenderer')
           ?.get('content')
           ?.get(type.youtubeRenderText);
+      if (type == VideoType.shorts) {
+        video = video
+            ?.get('onTap')
+            ?.get('innertubeCommand')
+            ?.get('reelWatchEndpoint');
+      }
     }
 
     if (video == null) {
