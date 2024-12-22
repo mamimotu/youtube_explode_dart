@@ -181,8 +181,8 @@ class WatchPage extends YoutubePage<WatchPageInitialData> {
     final Document document = parser.parse(htmlBody);
 
     // Extract cookies or other necessary data directly from the document
-    final String? visitorInfoLive = _visitorInfoLiveExp.firstMatch(htmlBody)?.group(1);
-    final String? ysc = _yscExp.firstMatch(htmlBody)?.group(1);
+    // final String? visitorInfoLive = _visitorInfoLiveExp.firstMatch(htmlBody)?.group(1);
+    // final String? ysc = _yscExp.firstMatch(htmlBody)?.group(1);
 
     // if (visitorInfoLive == null || ysc == null) {
     //   throw Exception('Required cookies are missing.');
