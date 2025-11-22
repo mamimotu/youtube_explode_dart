@@ -18,7 +18,9 @@ enum VideoIdData {
   withOmnidirectionalStreams('-xNN-bJQ4vI'),
   withHighDynamicRangeStreams('vX2vsvdq8nw'),
   withClosedCaptions('YltHGKX80Y8'),
-  withBrokenClosedCaptions('1VKIIw05JnE');
+  withBrokenClosedCaptions('1VKIIw05JnE'),
+  // used only for testing music data extraction
+  music('jNm_wrWquPs');
 
   const VideoIdData(this.id);
 
@@ -66,8 +68,10 @@ enum VideoIdData {
   // Videos whose streams can be fetched.
   static const playable = [
     ...VideoIdData.validWatchpage,
+/*
+    Currently YT has disabled unlogged clients from fetching age restricted videos.
     ageRestrictedViolent,
-    ageRestrictedSexual,
+    ageRestrictedSexual,*/
   ];
 
   // Cannot fetch metadata or streams.
